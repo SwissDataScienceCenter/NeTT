@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the NeTT paper."
+title: "NeTT: Neural Tensor Tomography"
+type: software
+license: MIT
+version: 0.1.0
+authors:
+  - family-names: "TODO"
+    given-names: "TODO"
+# TODO before release: authors, DOI (Zenodo), paper reference

@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nett"
+version = "0.1.0"
+description = "Neural Tensor Tomography (NeTT): implicit neural fields for X-ray scattering tensor tomography"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+  "numpy", "scipy", "h5py", "scikit-image", "tqdm", "matplotlib",
+  "torch>=2.1",
+  "mumott==2.3",
+  "cupy",          # CUDA arrays <-> ASTRA (install the build matching your CUDA, e.g. cupy-cuda12x)
+]
+# astra-toolbox (with CUDA) is not on PyPI: conda install -c astra-toolbox -c nvidia astra-toolbox
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.scripts]
+nett = "nett.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["nett*"]
+
+[tool.pytest.ini_options]
+markers = ["gpu: needs a CUDA GPU with the ASTRA toolbox"]

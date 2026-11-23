@@ -1,0 +1,102 @@
+"""``numbers.tex``: LaTeX macros so that the paper's text never hard-codes a number of a table.
+
+Macro names follow the manuscript (``\\gtOrientNettM``, ``\\rlNarwRandNett``, ``\\agrNettMR``, ``\\spCrossM`` ...);
+M, T, W = phantoms nielsen-m, nielsen-t, nielsen-mammoth.
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Optional
+
+import numpy as np
+
+from ..experiments.plan import PHANTOMS
+from .tables import DEC, HIGHER, Results
+
+CAP = {"orientation_error_mean": "Orient", "rsm_corr_mean": "Corr", "ra_mae": "Ra", "psnr": "Psnr", "ssim": "Ssim", "nrmse": "Nrmse"}
+LETTER = {"nielsen-m": "M", "nielsen-t": "T", "nielsen-mammoth": "W"}
+NAME = {"SH": "mumott SH", "GK": "mumott GK", "ZH": "mumott ZH"}
+REALKEYS = {"steel-wire_random": "SteelRand", "steel-wire_hightilt": "SteelHigh", "aragonite_random": "AragRand", "aragonite_hightilt": "AragHigh",
+            "beaver-tooth_random": "BeavRand", "beaver-tooth_hightilt": "BeavHigh", "narwhal-tusk_random": "NarwRand",
+            "narwhal-tusk_hightilt": "NarwHigh", "bone_crossmount": "BoneCross"}
+
+
+def macros(num: dict, R: Optional[Results] = None, agreement: Optional[dict] = None) -> str:
+    L = []
+
+    def m(n, v):
+        L.append(rf"\newcommand{{\{n}}}{{{v}}}")
+
+    for ph, le in LETTER.items():
+        if ph not in num or "NeTT" not in num[ph]:
+            continue
+        for k, c in CAP.items():
+            nt, sd = num[ph]["NeTT"][k]["mean"], num[ph]["NeTT"][k]["sd"]
+            cand = {b: num[ph][b][k] for b in NAME if b in num[ph]}
+            m(f"gt{c}Nett{le}", f"{nt:.{DEC[k]}f}")
+            m(f"gt{c}Sd{le}", f"{sd:.{DEC[k]}f}" if sd is not None else "0")
+            if not cand:
+                continue
+            bb = (max if k in HIGHER else min)(cand, key=cand.get)
+            bv = cand[bb]
+            m(f"gt{c}Best{le}", f"{bv:.{DEC[k]}f}")
+            m(f"gt{c}BestName{le}", NAME[bb])
+            for b in cand:
+                m(f"gt{c}{b}{le}", f"{cand[b]:.{DEC[k]}f}")
+            m(f"gt{c}Ratio{le}", f"{(bv / nt if k not in HIGHER else nt / bv):.1f}")
+            m(f"gt{c}Diff{le}", f"{abs(nt - bv):.{DEC[k]}f}")
+    for key, nm in REALKEYS.items():
+        d = num.get(key)
+        if not d or not d.get("NeTT"):
+            continue
+        nt = d["NeTT"]["mean"]
+        cand = {b: d[b] for b in NAME if d.get(b) is not None}
+        m(f"rl{nm}Nett", f"{nt:.3f}")
+        m(f"rl{nm}Sd", f"{d['NeTT']['sd']:.3f}")
+        if cand:
+            bb = min(cand, key=cand.get)
+            bv = cand[bb]
+            m(f"rl{nm}Best", f"{bv:.3f}")
+            m(f"rl{nm}BestName", NAME[bb])
+            m(f"rl{nm}Gain", f"{100 * (bv - nt) / bv:.1f}")
+            for b in cand:
+                m(f"rl{nm}Gain{b}", f"{100 * (cand[b] - nt) / cand[b]:.0f}")
+        for b in NAME:
+            m(f"rl{nm}{b}", f"{d[b]:.3f}" if d.get(b) is not None else "--")
+    if num.get("bone_crossmount", {}).get("NeTT"):
+        m("nRuns", str(num["bone_crossmount"]["NeTT"]["n"]))
+    for meth, key in (("Nett", "NeTT"), ("SH", "SH"), ("GK", "GK"), ("ZH", "ZH")):
+        for pair, tag in (("main-remount", "MR"), ("main-combined", "MC"), ("remount-combined", "RC")):
+            v = (agreement or {}).get(key, {}).get(pair)
+            m(f"agr{meth}{tag}", f"{v['mean']:.1f}" if v else "n/a")
+    if R is not None:
+        _sparsity_macros(R, m)
+    return "\n".join(L)
+
+
+def _sparsity_macros(R: Results, m) -> None:
+    """Data efficiency under random pruning (3 realisations): the fewest projections at which NeTT beats the best baseline with all of them."""
+    LV = [100, 90, 80, 70, 60, 50, 40, 30, 20]
+    kept = {lv: round(417 - round(round((100 - lv) / 10) * 10 / 100.0 * 417)) for lv in LV + [10]}
+    for ph, le in LETTER.items():
+        def val(meth, lv):
+            xs = [R.metric(f"sparsity/{ph}/{s}_L{lv}_{meth}" + ("_s0" if meth == "NeTT" else ""), "orientation_error_mean")
+                  for s in ("random", "random1", "random2")]
+            xs = [x for x in xs if x is not None]
+            return float(np.mean(xs)) if len(xs) == 3 else None
+        if any(val("NeTT", lv) is None or val("SH", lv) is None or val("GK", lv) is None for lv in LV):
+            continue
+        best = min(val("SH", 100), val("GK", 100))
+        below = [kept[lv] for lv in LV + [10] if val("NeTT", lv) is not None and val("NeTT", lv) < best]
+        m(f"spBest{le}", f"{best:.1f}")
+        m(f"spCross{le}", str(min(below)) if below else "n/a")
+        m(f"spCrossPct{le}", f"{100 * min(below) / 417:.0f}" if below else "n/a")
+        m(f"spFactor{le}", f"{417 / min(below):.1f}" if below else "n/a")
+        m(f"spAll{le}", "yes" if all(val("NeTT", lv) < min(val("SH", lv), val("GK", lv)) for lv in LV) else "no")
+
+
+def write(num: dict, out: Path, R: Optional[Results] = None) -> None:
+    ag = out / "bone_agreement.json"
+    agreement = json.loads(ag.read_text()) if ag.exists() else None
+    (out / "numbers.tex").write_text("% generated by `nett tables` -- do not edit\n" + macros(num, R, agreement) + "\n")

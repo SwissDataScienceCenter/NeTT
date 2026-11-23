@@ -1,0 +1,19 @@
+name: nett
+channels: [astra-toolbox, nvidia, pytorch, conda-forge]
+dependencies:
+  - python=3.10
+  - astra-toolbox=2.3.1        # CUDA build
+  - pytorch=2.8
+  - pytorch-cuda=12.8
+  - cupy
+  - numpy
+  - scipy
+  - h5py
+  - scikit-image
+  - matplotlib
+  - tqdm
+  - pytest
+  - pip
+  - pip:
+      - mumott==2.3
+      - -e .

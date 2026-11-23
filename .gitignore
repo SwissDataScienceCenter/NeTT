@@ -1,0 +1,7 @@
+data/
+results/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+paper_tables/
+paper_figures/

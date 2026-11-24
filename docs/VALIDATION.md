@@ -44,5 +44,5 @@ Bone cross-mount: SH 0.2797, GK 0.2162 (identical), ZH 0.1759 (paper 0.1761).
 
 Noise, sparsity and no-network-control runs, the other experimental datasets (aragonite, beaver tooth), the bone
 orientation-agreement metric on full volumes, and a clean-environment install from `environment.yml`/`Dockerfile` and
-`nett data download` (Zenodo is not reachable from the development sandbox). The unit tests
+a clean install from `environment.yml`/`Dockerfile` (`nett data download` itself was tested, see `DATA.md`). The unit tests
 (`pytest`) and GPU tests (`pytest -m gpu`) cover the components.

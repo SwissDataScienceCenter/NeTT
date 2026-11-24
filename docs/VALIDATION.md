@@ -1,7 +1,7 @@
 # Validation of the standalone repository
 
 Goal: show that `nett` (this repository, independent of the research code `smartt`) reproduces the numbers of the
-paper. Run on Clariden (GH200, 1 node, 8 workers sharing 4 GPUs; torch 2.8, mumott 2.3, astra-toolbox 2.3.1),
+paper. Run on Clariden (GH200, 1 node, 8 workers sharing 4 GPUs; python 3.12, torch 2.11 (NGC build), mumott 2.3, astra-toolbox 2.3.0; the paper's NeTT runs used an earlier torch 2.8 / astra 2.3 environment, so this is also a check across versions). Each NeTT run took 52-161 min with 8 runs sharing the node,
 2026-11-23/24. Raw results of every run: `docs/validation_runs/` (JSON; volumes not stored).
 
 ## 1. Equivalence with the research code (`tests/gpu_equivalence.py`, nielsen-t, 150 steps, same seed)

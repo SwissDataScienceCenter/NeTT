@@ -34,7 +34,7 @@ conda env create -f environment.yml && conda activate nett      # or: see Docker
 nett check                                                       # prints versions and whether CUDA works
 ```
 
-The paper's numbers were produced with torch 2.8, mumott 2.3 and astra-toolbox 2.3.
+The paper's numbers were produced with torch 2.8, mumott 2.3 and astra-toolbox 2.3; the validation (`docs/VALIDATION.md`) was run with torch 2.11, mumott 2.3 and astra-toolbox 2.3.0 and agrees.
 
 ## Reproduce the paper
 

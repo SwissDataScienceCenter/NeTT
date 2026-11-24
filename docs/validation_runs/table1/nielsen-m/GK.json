@@ -1,0 +1,62 @@
+{
+ "run": {
+  "id": "table1/nielsen-m/GK",
+  "experiment": "table1",
+  "dataset": "nielsen-m",
+  "method": "GK",
+  "evaluation": "ground_truth",
+  "holdout": "none",
+  "seed": 0,
+  "poisson_rate": null,
+  "prune": null,
+  "overrides": {},
+  "depends_on": null,
+  "ell_max": null,
+  "est_minutes": 30
+ },
+ "n_train": 416,
+ "n_held": 1,
+ "ell_max": 12,
+ "settings": {
+  "ell_max": 12,
+  "laplacian_weight": 0.0,
+  "maxiter": 500,
+  "maxfun": 2000,
+  "maxcor": 10,
+  "ftol": 0.001,
+  "gtol": 1e-05,
+  "zh_resolution": 20,
+  "zh_maxiter": 300,
+  "zh_filter": "square",
+  "projector": "cuda"
+ },
+ "report": {
+  "nit": 67,
+  "nfev": 75,
+  "status": 0,
+  "success": true,
+  "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+  "final_loss": 995172.8189466371,
+  "seconds": 36.83057188987732
+ },
+ "metrics": {
+  "rsm_corr_mean": 0.910238843167137,
+  "ra_mae": 0.040339502141992854,
+  "orientation_error_mean": 4.20006575574593,
+  "psnr": 5.433165158207782,
+  "nrmse": 4.992634440383433,
+  "ssim": 0.9400084977288757
+ },
+ "wall_seconds": 100.1000509262085,
+ "versions": {
+  "nett": "0.1.0",
+  "python": "3.12.3",
+  "torch": "2.11.0a0+eb65b36914.nv26.02",
+  "host": "nid006116",
+  "mumott": "2.3",
+  "astra": "2.3.0",
+  "numpy": "2.1.0",
+  "scipy": "1.17.0",
+  "gpu": "NVIDIA GH200 120GB"
+ }
+}

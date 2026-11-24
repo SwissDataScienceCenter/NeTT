@@ -1,0 +1,57 @@
+{
+ "run": {
+  "id": "bone/bone-remount/GK",
+  "experiment": "bone",
+  "dataset": "bone-remount",
+  "method": "GK",
+  "evaluation": "cross_mount",
+  "holdout": "none",
+  "seed": 0,
+  "poisson_rate": null,
+  "prune": null,
+  "overrides": {},
+  "depends_on": null,
+  "ell_max": null,
+  "est_minutes": 30
+ },
+ "n_train": 223,
+ "n_held": 1,
+ "ell_max": 8,
+ "settings": {
+  "ell_max": 8,
+  "laplacian_weight": 0.0,
+  "maxiter": 500,
+  "maxfun": 2000,
+  "maxcor": 10,
+  "ftol": 0.001,
+  "gtol": 1e-05,
+  "zh_resolution": 20,
+  "zh_maxiter": 300,
+  "zh_filter": "square",
+  "projector": "cuda"
+ },
+ "report": {
+  "nit": 67,
+  "nfev": 75,
+  "status": 0,
+  "success": true,
+  "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+  "final_loss": 9200329.155038578,
+  "seconds": 59.913496017456055
+ },
+ "metrics": {
+  "cross_mount_nrmse": 0.20749127655970642
+ },
+ "wall_seconds": 64.40694642066956,
+ "versions": {
+  "nett": "0.1.0",
+  "python": "3.12.3",
+  "torch": "2.11.0a0+eb65b36914.nv26.02",
+  "host": "nid006116",
+  "mumott": "2.3",
+  "astra": "2.3.0",
+  "numpy": "2.1.0",
+  "scipy": "1.17.0",
+  "gpu": "NVIDIA GH200 120GB"
+ }
+}

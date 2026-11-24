@@ -1,0 +1,57 @@
+{
+ "run": {
+  "id": "bone/bone-main/SH",
+  "experiment": "bone",
+  "dataset": "bone-main",
+  "method": "SH",
+  "evaluation": "cross_mount",
+  "holdout": "none",
+  "seed": 0,
+  "poisson_rate": null,
+  "prune": null,
+  "overrides": {},
+  "depends_on": null,
+  "ell_max": null,
+  "est_minutes": 30
+ },
+ "n_train": 223,
+ "n_held": 1,
+ "ell_max": 8,
+ "settings": {
+  "ell_max": 8,
+  "laplacian_weight": 0.0,
+  "maxiter": 500,
+  "maxfun": 2000,
+  "maxcor": 10,
+  "ftol": 0.001,
+  "gtol": 1e-05,
+  "zh_resolution": 20,
+  "zh_maxiter": 300,
+  "zh_filter": "square",
+  "projector": "cuda"
+ },
+ "report": {
+  "nit": 64,
+  "nfev": 70,
+  "status": 0,
+  "success": true,
+  "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+  "final_loss": 7641300.8164479565,
+  "seconds": 55.41476082801819
+ },
+ "metrics": {
+  "cross_mount_nrmse": 0.2798676102704977
+ },
+ "wall_seconds": 60.14301538467407,
+ "versions": {
+  "nett": "0.1.0",
+  "python": "3.12.3",
+  "torch": "2.11.0a0+eb65b36914.nv26.02",
+  "host": "nid006116",
+  "mumott": "2.3",
+  "astra": "2.3.0",
+  "numpy": "2.1.0",
+  "scipy": "1.17.0",
+  "gpu": "NVIDIA GH200 120GB"
+ }
+}

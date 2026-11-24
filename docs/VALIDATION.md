@@ -43,6 +43,6 @@ Bone cross-mount: SH 0.2797, GK 0.2162 (identical), ZH 0.1759 (paper 0.1761).
 ## Not covered by this validation
 
 Noise, sparsity and no-network-control runs, the other experimental datasets (aragonite, beaver tooth), the bone
-orientation-agreement metric on full volumes, and a clean-environment install from `environment.yml`/`Dockerfile` and
-a clean install from `environment.yml`/`Dockerfile` (`nett data download` itself was tested, see `DATA.md`). The unit tests
+orientation-agreement metric on full volumes, and a clean install from `environment.yml`/`Dockerfile`
+(`nett data download` and `nett data prepare` were tested from scratch, see `DATA.md`). The unit tests
 (`pytest`) and GPU tests (`pytest -m gpu`) cover the components.
